@@ -2,6 +2,32 @@ var express = require('express');
 var router = express.Router();
 const messages=require('../errorMessage');
 
+const refreshTokenHell = () => {
+  return new Promise((resolve, reject) => {
+    resolve("newTokenValu")
+  })
+}
+const getAuthObject = (token) => {
+  return new Promise((resolve, reject) => {
+    if (token === "newTokenValue") {
+      resolve({ auth_code: "abc", device_code: "xxxyyyzzz" })
+    } else {
+      resolve("error")
+    }
+  })
+}
+
+const hell = async () =>{
+  try {
+        console.log("hell")
+        const token = await refreshTokenHell();
+        const auth = await getAuthObject( token );
+        console.log(auth)
+      } catch (error) {
+        error.message
+      }
+}
+
 router.post('/', function(req, res, next) {
 
   // Check if payload node exists
@@ -34,5 +60,10 @@ router.post('/', function(req, res, next) {
   resp.response=filteredShows
   res.json(resp)
 });
+
+router.get('/promisehell',function(req, res, next){
+  hell();
+  res.json({message:"hell"})
+})
 
 module.exports = router;
